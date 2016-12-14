@@ -29,16 +29,16 @@
 	pr = "!f() { \
 	BRANCH_NAME=`git rev-parse --abbrev-ref HEAD`; \
         hub pull-request -m \"$1\" -b develop -h \"$BRANCH_NAME\" -l \"Waiting for validation\"; \
-	PR_URL=`hub pull-request -m \"$1\" -b qual -h \"$BRANCH_NAME\" -l \"Please Review\"`;\
-	echo $PR_URL; \
-	echo \"$BRANCH_NAME:$PR_URL\" >> ~/tarkett/pull_requests.csv;\
+	hub pull-request -m \"$1\" -b qual -h \"$BRANCH_NAME\" -l \"Please Review\";\
       	}; f"
 	yeah = "!f() { \
 	BRANCH_NAME=`git rev-parse --abbrev-ref HEAD`; \
-	PR_URL=grep -F $BRANCH_NAME ~/tarkett/pull_requests.csv;\
-	if [ -n \"${$PR_URL}\" ]; then \
-		hub merge PR_URL;\
-	fi \
+	git br -D qual;\
+	git fetch --all;\
+	git co --track origin/qual;\
+	git co qual;\
+	git merge \"$BRANCH_NAME\";\
+	git push;\
 	}; f"
 
 [push]
