@@ -27,9 +27,19 @@
 	cpc = cherry-pick --continue
 	top = !~/tarkett/scripts/resolve-conflict.sh $1
 	pr = "!f() { \
-        hub pull-request -m \"$1\" -b develop -h `git rev-parse --abbrev-ref HEAD`; \
-	hub pull-request -m \"$1\" -b qual -h `git rev-parse --abbrev-ref HEAD`;\
+	BRANCH_NAME=`git rev-parse --abbrev-ref HEAD`; \
+        hub pull-request -m \"$1\" -b develop -h \"$BRANCH_NAME\" -l \"Waiting for validation\"; \
+	PR_URL=`hub pull-request -m \"$1\" -b qual -h \"$BRANCH_NAME\" -l \"Please Review\"`;\
+	echo $PR_URL; \
+	echo \"$BRANCH_NAME:$PR_URL\" >> ~/tarkett/pull_requests.csv;\
       	}; f"
+	yeah = "!f() { \
+	BRANCH_NAME=`git rev-parse --abbrev-ref HEAD`; \
+	PR_URL=grep -F $BRANCH_NAME ~/tarkett/pull_requests.csv;\
+	if [ -n \"${$PR_URL}\" ]; then \
+		hub merge PR_URL;\
+	fi \
+	}; f"
 
 [push]
 	default = current
