@@ -12,11 +12,11 @@
         lg  = log -M --decorate --graph
         br  = branch
         sth = stash
+	c = !./supercommit.sh
 	cb = checkout -b
 	cm = commit -m
-	cp = !git checkout $1 && git pull && :
-	cpoule = !find '.' -mindepth 1 -maxdepth 1 -type d -print -exec git -C {} cp develop "\\;" -exec git -C {} co - "\\;" && docker exec -it tarkett_account_1 bin/console doc:schema:up --force && docker exec -it tarkett_basket_1 bin/console doc:schema:up --force
-	poule = !find '.' -mindepth 1 -maxdepth 1 -type d -print -exec git -C {} pull "\\;"
+	cp = !git checkout $1 && git poule && :
+	poule = !git pull | grep -q package.json && npm install
 	pousse = push -f
 	oeuf = !git checkout --track origin/$1 && :
 	amen = !git commit --amend && git push -f
@@ -28,8 +28,8 @@
 	top = !~/tarkett/scripts/resolve-conflict.sh $1
 	pr = "!f() { \
 	BRANCH_NAME=`git rev-parse --abbrev-ref HEAD`; \
-        hub pull-request -m \"$1\" -b develop -h \"$BRANCH_NAME\" -l \"Waiting for validation\"; \
-	hub pull-request -m \"$1\" -b qual -h \"$BRANCH_NAME\" -l \"Please Review\";\
+	hub pull-request -m \"$1\" -b master -l \"master\" -h \"$BRANCH_NAME\";\
+	hub pull-request -m \"$1\" -b staging -l \"staging\" -h \"$BRANCH_NAME\";\
       	}; f"
 	yeah = "!f() { \
 	BRANCH_NAME=`git rev-parse --abbrev-ref HEAD`; \
