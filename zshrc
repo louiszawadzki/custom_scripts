@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/louis/.oh-my-zsh
+export ZSH=/home/z/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -86,13 +86,18 @@ eval $(thefuck --alias)
 
 alias poule="git pull; npm install"
 alias top="/usr/bin/htop"
-alias tkt="cd ~/tarkett && docker-compose up -d && tmux && git cpoule"
+alias tkt="cd ~/tarkett && docker-compose up -d"
 alias tktt="cd ~/tarkett && docker-compose up -d && find . -mindepth 1 -maxdepth 1 -type d -print -exec git -C {} cp develop \; -exec git -C {} co - \; && docker exec -it tarkett_account_1 bin/console doc:schema:up --force && docker exec -it tarkett_basket_1 bin/console doc:schema:up --force"
+alias pstorm="~/Téléchargements/PhpStorm-162.2380.11/bin/phpstorm.sh"
+alias sourceme="source ~/.zshrc"
+alias pycharm="/opt/pycharm-community-2017.1.4/bin/pycharm.sh"
+alias expo="~/bin/xde-2.19.2-x86_64.AppImage"
 
 awsset() {
 export AWS_DEFAULT_PROFILE=$1
 export AWS_PROFILE=$1
 export AWS_DEFAULT_REGION=eu-west-1
+export AWS_REGION=eu-west-1
 }
 
 get_params_file() {
@@ -105,5 +110,27 @@ set_params_file() {
     aws s3 cp $3 s3://tarkett-parameters-$1/$2/parameters.yml
 }
 
+edit_params_file() {
+    get_params_file $1 $2 /tmp/$1.$2.yml
+    vim /tmp/$1.$2.yml
+    read "update?Update params file (y/n)?"
+    if [[ "$update" =~ ^[Yy]$ ]]
+    then
+        set_params_file $1 $2 /tmp/$1.$2.yml
+	echo "file updated"
+    else
+        echo "file not updated"
+    fi
+}
+
+
 # added by travis gem
 [ -f /home/louis/.travis/travis.sh ] && source /home/louis/.travis/travis.sh
+
+export ANDROID_HOME=${HOME}/Android/Sdk
+export PATH=${PATH}:${ANDROID_HOME}/tools
+export PATH=${PATH}:${ANDROID_HOME}/platform-tools
+
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

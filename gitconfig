@@ -12,7 +12,7 @@
         lg  = log -M --decorate --graph
         br  = branch
         sth = stash
-	c = !./supercommit.sh
+	c = !~/supercommit.sh
 	cb = checkout -b
 	cm = commit -m
 	cp = !git checkout $1 && git poule && :
@@ -28,8 +28,8 @@
 	top = !~/tarkett/scripts/resolve-conflict.sh $1
 	pr = "!f() { \
 	BRANCH_NAME=`git rev-parse --abbrev-ref HEAD`; \
-	hub pull-request -m \"$1\" -b master -l \"master\" -h \"$BRANCH_NAME\";\
-	hub pull-request -m \"$1\" -b staging -l \"staging\" -h \"$BRANCH_NAME\";\
+	hub pull-request -m \"$1\" -b staging -l \"Staging\" -h \"$BRANCH_NAME\";\
+	hub pull-request -m \"$1\" -b master -l \"Master\" -h \"$BRANCH_NAME\";\
       	}; f"
 	yeah = "!f() { \
 	BRANCH_NAME=`git rev-parse --abbrev-ref HEAD`; \
@@ -43,3 +43,5 @@
 
 [push]
 	default = current
+[core]
+	editor = vim

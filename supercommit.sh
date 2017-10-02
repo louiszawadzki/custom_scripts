@@ -1,6 +1,7 @@
 #!/bin/bash
 echo -n "Type of commit:
 [B]ugfix
+[C]osmetic
 [D]ocumentation
 [F]eature
 [P]erformance
@@ -13,6 +14,9 @@ read -n 1 option
 case $option in
   B)
     emoji=":bug: "
+    ;;
+  C)
+    emoji=":lipstick: "
     ;;
   D)
     emoji=":books: "
@@ -40,4 +44,4 @@ Type your commit message:
 
 read message
 
-git commit -m "$emoji$message"
+git commit -m "$emoji$message" --no-verify
